@@ -114,8 +114,8 @@ public class DatosJSon {
                         
                         JSONObject geopoint = estacion.getJSONObject("geo_point_2d");
                         
-                        puntoA[i]= geopoint.getDouble("lon");
-                        puntoB[i]= geopoint.getDouble("lat");
+                        puntoA[i]= geopoint.getDouble("lat");
+                        puntoB[i]= geopoint.getDouble("lon");
                         
                         // Construir string para mostrar
                         String infoEstacion = String.format("Estación %d: %s - Bicis: %d, Puestos: %d%n", 

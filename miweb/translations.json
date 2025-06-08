@@ -1,0 +1,36 @@
+{
+  "es": {
+    "title_page1": "Disponibilidad de ValenBisi",
+    "title_page2": "Mapa de Estaciones Valenbisi",
+    "address": "Dirección",
+    "number": "Número",
+    "open": "Abierto",
+    "available": "Disponibles",
+    "free": "Libres",
+    "total": "Total",
+    "updated": "Actualizado",
+    "coordinates": "Coordenadas",
+    "view_map": "Ver mapa de estaciones",
+    "map_title": "Mapeo de Bicicletas en Valencia",
+    "bikes_available": "Bicis disponibles",
+    "free_spaces": "Espacios libres",
+    "total_capacity": "Capacidad total"
+  },
+  "en": {
+    "title_page1": "ValenBisi Availability",
+    "title_page2": "Valenbisi Stations Map",
+    "address": "Address",
+    "number": "Number",
+    "open": "Open",
+    "available": "Available",
+    "free": "Free",
+    "total": "Total",
+    "updated": "Updated",
+    "coordinates": "Coordinates",
+    "view_map": "View stations map",
+    "map_title": "Valencia Bikes Mapping",
+    "bikes_available": "Bikes available",
+    "free_spaces": "Free spaces",
+    "total_capacity": "Total capacity"
+  }
+}

@@ -28,9 +28,9 @@ public class ConexionBDD extends javax.swing.JFrame {
     private static DatosJSon dJSon;
     private static int numEst = 3;
     private static final String driver = "com.mysql.cj.jdbc.Driver";//com.mysql.jdbc.Driver";
-    private static final String user = "root";
-    private static final String pass = "1234567";
-    private static final String url = "jdbc:mysql://localhost:3306/valenBici";
+    private static final String user = "";
+    private static final String pass = "";
+    private static final String url = "";
     /**
      * Creates new form ConexionBDD1
      */
@@ -64,6 +64,8 @@ public class ConexionBDD extends javax.swing.JFrame {
         lblDatosEstaciones = new javax.swing.JLabel();
         btnConectarBDD = new javax.swing.JButton();
         btnAddBDD = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -130,6 +132,20 @@ public class ConexionBDD extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Es");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("En");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -150,15 +166,20 @@ public class ConexionBDD extends javax.swing.JFrame {
                                     .addComponent(Datos))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(159, 159, 159)
-                                        .addComponent(lblDatosEstaciones))
-                                    .addGroup(layout.createSequentialGroup()
                                         .addGap(92, 92, 92)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addComponent(btnCerrarConexion)
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addComponent(lblAddBDD)
-                                                .addComponent(lblEstadoConexion))))))
+                                                .addComponent(lblEstadoConexion))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(159, 159, 159)
+                                        .addComponent(lblDatosEstaciones))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(162, 162, 162)
+                                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addComponent(btnAddBDD))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -174,7 +195,11 @@ public class ConexionBDD extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtNumEstaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(48, 48, 48)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addGap(13, 13, 13)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Datos)
                     .addComponent(lblDatosEstaciones))
@@ -198,7 +223,15 @@ public class ConexionBDD extends javax.swing.JFrame {
     public void conector(){
         try{
             con = DriverManager.getConnection(url, user, pass);
-            lblEstadoConexion.setText("Conexion Exitosa");
+            
+            if(btnConectarBDD.getText()=="Connect"){
+            
+                lblEstadoConexion.setText("Successful Connection");
+            }
+            else{
+                lblEstadoConexion.setText("Conexión Exitosa");
+            }
+            
             lblEstadoConexion.setBackground(Color.green);
             
         }
@@ -211,6 +244,7 @@ public class ConexionBDD extends javax.swing.JFrame {
     private void btnCerrarConexionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCerrarConexionMouseClicked
         try{
             con.close();
+            lblEstadoConexion.setText("Desconectado de la Base de datos.");
         }catch(SQLException ex){
             Logger.getLogger(ConexionBDD.class.getName()).log(Level.SEVERE,null,ex);
         }
@@ -255,22 +289,50 @@ public class ConexionBDD extends javax.swing.JFrame {
             
             for(int i=0;i<numEst;i++){
                 
-                String sql = " insert into historico (estacion_id,direccion,bicis_disponibles,anclajes_libres,estado_operativo,fecha_registro,ubicacion)"
+                String sql = " insert into historico (estacion_id,direccion,bicis_disponibles,anclajes_libres,estado_operativo,fecha_registro,latitud,longitud)"
                         + "values ( "+dJSon.estacion_id[i]+",'"+dJSon.direccion[i]+"',"+dJSon.bicis_disponibles[i]
                         + ","+dJSon.anclajes_libres[i]+","+dJSon.estado_operativo[i]+ ",STR_TO_DATE('"+dJSon.fecha_registro[i]+"','%d/%m/%Y %H:%i:%s')"
-                        + ",POINT("+dJSon.puntoA[i]+","+dJSon.puntoB[i]+"));";
+                        + ","+dJSon.puntoA[i]+","+dJSon.puntoB[i]+");";
                 System.out.println(sql);
                 Statement stmt = con.createStatement();
                 stmt.executeUpdate(sql);
             }
-         
-            lblAddBDD.setText("Datos añadidos");
+            if(Datos.getText() =="Datos")
+            {
+                lblAddBDD.setText("Datos añadidos.");
+            }
+            else{
+                lblAddBDD.setText("Added data.");
+            }
+            
         }
         catch(SQLException e){
             lblAddBDD.setText("Error de conexión "+e.getMessage());
             System.out.println(e.getMessage());
         }
     }//GEN-LAST:event_btnAddBDDMouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+       jLabel1.setText("Enter the number of stations to query:" );
+       Datos.setText("Dates");
+       lblDatosEstaciones.setText("Get data from stations");
+       btnConectarBDD.setText("Connect");
+       lblEstadoConexion.setText("Connection status");
+       btnAddBDD.setText("Add to DB");
+       lblAddBDD.setText("Addition status");
+       btnCerrarConexion.setText("Close connection");
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        jLabel1.setText("Introduce el numero de estaciones a consultar:" );
+       Datos.setText("Datos");
+       lblDatosEstaciones.setText("Obtener datos de Estaciones");
+       btnConectarBDD.setText("Conectar");
+       lblEstadoConexion.setText("Estado de conexión");
+       btnAddBDD.setText("Añadir a BDD");
+       lblAddBDD.setText("Estado de Adicción");
+       btnCerrarConexion.setText("Cerrar Conexión");
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -313,6 +375,8 @@ public class ConexionBDD extends javax.swing.JFrame {
     private javax.swing.JButton btnAddBDD;
     private javax.swing.JButton btnCerrarConexion;
     private javax.swing.JButton btnConectarBDD;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAddBDD;
